@@ -19,7 +19,7 @@ function base_url(){
 }
 
 function plugin_url(){
-    return $url = site_url() . '/wp-content/plugins/' . plugin_name();
+    return site_url() . '/wp-content/plugins/' . plugin_name();
 }
 
 function consume_api(string $url, string $http_verb, $body = null, ?Array $headers = null, ?Array $options = null, $decode = true, $encode_body = true){

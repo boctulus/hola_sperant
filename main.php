@@ -16,6 +16,8 @@ function assets(){
 	#js_file('/js/bootstrap/bootstrap.bundle.min.js');
 
     css_file('/css/styles.css');
+    js_file('/js/utilities.js');
+    js_file('/js/sweetalert.js');
 }
 
 enqueue('assets');
