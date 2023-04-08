@@ -39,7 +39,36 @@ const decodeProp = (prop_id) => {
 }
 
 /*
-    Todos los elementos del formulario poseen cierta clase de css,
+    Los elementos del formulario seran recogidos en un objeto
+
+    Si use_id es true, se usa su id y si es false, el name
+
+    De especificarse un prefijo, puede eliminarlo de cada nombre de campo
+
+    Ej:
+
+    getFormData(this, false, 'col-')
+*/
+const getFormData = (formElem, use_id = true, prefix = null) => {
+    const serialized = jQuery(formElem).serializeArray();
+    const jsonData = {};
+
+    serialized.forEach((item) => {
+        let field  = use_id ? item.id : item.name;
+
+        if (prefix != null && field.startsWith(prefix)){
+            field = field.substr(prefix.length);
+        }
+
+        jsonData[field] = item.value
+        
+    });
+
+    return jsonData;
+}
+
+/*
+    Los elementos del formulario poseen cierta clase de css,
     seran recogidos en el objeto
 
     Ej:
@@ -54,11 +83,11 @@ const decodeProp = (prop_id) => {
 
     Si use_name es true, buscara los elementos por name y no por id
 */
-const getObjFromElems = (elem_class, prefix = null, use_name = false) => {
+const getFormDataByClassName = (elem_class, use_id = true, prefix = null) => {
     let obj = {};
 
     $('.'+elem_class).each((ix, el) => {
-        let field  = use_name ? el.name : el.id;
+        let field  = use_id ? el.id : el.name;
 
         if (prefix != null && field.startsWith(prefix)){
             field = field.substr(prefix.length);
@@ -69,6 +98,7 @@ const getObjFromElems = (elem_class, prefix = null, use_name = false) => {
 
     return obj;
 }
+
 
 /*
     Rellena un formulario 

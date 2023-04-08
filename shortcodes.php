@@ -47,22 +47,15 @@ function sperant()
     <script>
 
         const base_url = '<?= Url::getBaseUrl() ?>'
-        const url      = base_url + 'wp-json/bzz-export/v1/post';  /// apuntar al endpoint reg. en rutas
+        //const url      = base_url + 'wp-json/bzz-export/v1/post';  /// apuntar al endpoint reg. en rutas
 
         function do_it(e){
                 e.preventDefault();
 
-                console.log('HERE');
-
-                const serialized = $(e.currentTarget).serializeArray();
-                const jsonData = {};
-                serialized.forEach((item) => (jsonData[item.name] = item.value));
-            
+                const jsonData = getFormData(e.currentTarget, false)
 
                 console.log(jsonData)
-
-           
-                
+    
                 // jQuery.ajax({
                 //     url: url, // post
                 //     type: "post",
