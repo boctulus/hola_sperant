@@ -7,7 +7,5 @@
 */
 
 return [
-    '/api/v1/greetings/hi'           => 'boctulus\SW\controllers\Saludator@saludar',
-    '/api/v1/greetings/whore'        => 'boctulus\SW\controllers\Saludator@insultar',
-    '/api/v1/greetings'              => 'boctulus\SW\controllers\Saludator',
+       '/api/v1/form/save'  => 'boctulus\SW\controllers\AjaxForm@save_form',
 ];

@@ -15,4 +15,8 @@ class Saludator
     function index(){
         return 'Saludo generico';
     }
+
+    function save_form(){
+        return 'salvando';
+    }
 }

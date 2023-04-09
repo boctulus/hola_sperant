@@ -66,4 +66,42 @@ function test_hola(){
 	);  
 }
 
-test_hola();
+//test_hola();
+
+
+function test_validator(){
+	$data = [
+		"fname" => "Tomas",
+		"lname" => "Cruz",
+		"email" => "cruz_t@gmail.com",
+		"input_channel_id" => 8,
+		"source_id" => 2,
+		"interest_type_id" => 4,
+		"project_id" => 540,
+		"extra_fields" => [
+			"rango_de_presupuesto" => "2M-3M"
+		]            
+	];
+
+	$rules = [
+		'fname' 			=> ['type'=>'alpha','required'=>true,'min'=>3],
+		'lname' 			=> ['type'=>'alpha','required'=>true,'min'=>2,'max'=>100],
+		'email' 			=> ['type'=>'email','required'=>true], 
+		'input_channel_id'  => ['type'=>'int',  'required'=>true,'min'=>0],
+		'source_id'         => ['type'=>'int',  'required'=>true,'min'=>0],
+		'interest_type_id'  => ['type'=>'int',  'required'=>true,'min'=>0],
+		'project_id'        => ['type'=>'int',  'required'=>true,'min'=>0],
+		'extra_fields' 	    => ['type'=>'array','min'=>1],
+	];
+
+	$v = new Validator;
+
+	if ($v->validate($data, $rules /*, $fillables */)){
+		dd('Valido');
+	} else {
+	   dd($v->getErrors(), 'Errores de validacion');
+	} 
+}
+
+
+test_validator();
