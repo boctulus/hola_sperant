@@ -10,21 +10,25 @@ function sperant()
     ?>
     
     <form id="hola_form" aria-label="Formulario de contacto">
-        <p><span class="wpcf7-form-control-wrap"><input size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" placeholder="Nombre*" value="" type="text" name="fname"></span>
+        <p><span class="wpcf7-form-control-wrap">
+            <input required size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" placeholder="Nombre*" value="" type="text" name="fname"></span>
         </p>
         
-        <p><span class="wpcf7-form-control-wrap"><input size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" placeholder="Apellido*" value="" type="text" name="lname"></span>
+        <p><span class="wpcf7-form-control-wrap">
+            <input required size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" placeholder="Apellido*" value="" type="text" name="lname"></span>
         </p>
         
-        <p><span class="wpcf7-form-control-wrap"><input size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email f2save" aria-required="true" aria-invalid="false" placeholder="Correo electrónico*" value="" type="email" name="email"></span>
+        <p><span class="wpcf7-form-control-wrap">
+            <input required size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email f2save" aria-required="true" aria-invalid="false" placeholder="Correo electrónico*" value="" type="email" name="email"></span>
         </p>
         
-        <p><span class="wpcf7-form-control-wrap"><input size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel f2save" aria-required="true" aria-invalid="false" placeholder="Teléfono*" value="" type="tel" name="phone"></span>
+        <p><span class="wpcf7-form-control-wrap">
+            <input required size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel f2save" aria-required="true" aria-invalid="false" placeholder="Teléfono*" value="" type="tel" name="phone"></span>
         </p>
         
         <p>¿Cuentas con algún presupuesto para adquirir tu nuevo departamento?<br>
         <span class="wpcf7-form-control-wrap">        
-            <select class="wpcf7-form-control wpcf7-select wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" name="extra_fields:presupuesto"> 
+            <select required class="wpcf7-form-control wpcf7-select wpcf7-validates-as-required f2save" aria-required="true" aria-invalid="false" name="extra_fields:presupuesto"> 
                 <option value="De $2,000,000 a $3,000,000">De $2,000,000 a $3,000,000</option>
                 <option value="De $3,000,000 a $4,000,000">De $3,000,000 a $4,000,000</option>
                 <option value="Más de $4,000,000">Más de $4,000,000</option>
@@ -35,7 +39,7 @@ function sperant()
         <p>
             
         <input class="wpcf7-form-control has-spinner wpcf7-submit" id="submit_btn" type="submit" value="Enviar">
-        
+
         <!-- loading notification -->
         <div id="loading-text"></div><br>
         
@@ -45,7 +49,7 @@ function sperant()
         <input class="wpcf7-form-control wpcf7-hidden f2save" value="540" type="hidden" name="project_id">
 
         <!-- area de mensajes     -->
-        </p><div class="wpcf7-response-output" aria-hidden="true">Gracias por tu mensaje. Ha sido enviado.</div>
+        </p><div class="wpcf7-response-output" id="response-output" aria-hidden="true"></div>
     </form>          
             
     <script>
@@ -54,17 +58,18 @@ function sperant()
         const url      = base_url + '/api/v1/form/save';  /// apuntar al endpoint reg. en rutas
 
         function setNotification(msg){
-            document.getElementById("wpcf7-response-output").innerHTML = msg;
+            $('#response-output').show()
+            $('#response-output').html(msg);
         }
 
         /*
             Agregado para el "loading,.." con Ajax
         */
-
-        document.getElementById("submit_btn").addEventListener("click", loadingAjaxNotification)
     
         function loadingAjaxNotification() {
-            document.getElementById("loading-text").innerHTML = "...";
+            <?php $path = asset('images/loading.gif') ?>
+
+            document.getElementById("loading-text").innerHTML = "<img src=\"<?= $path ?>\" style=\"transform: scale(0.5);\" />";
         }
 
         function clearAjaxNotification() {
@@ -80,6 +85,8 @@ function sperant()
                 delete jsonData['extra_fields:presupuesto']
 
                 //console.log(jsonData)
+
+                loadingAjaxNotification()
 
                 jQuery.ajax({
                     url: url, // post
@@ -97,7 +104,9 @@ function sperant()
                         //     }
                         // }
 
-                        console.log('RES', res);                        
+                        //console.log('RES', res); 
+                        setNotification("Gracias por tu mensaje. Ha sido enviado.");
+                                               
                     },
                     error: function(res) {
                         clearAjaxNotification();
@@ -106,8 +115,8 @@ function sperant()
                         //     setNotification(res['message']);
                         // }
 
-                        console.log('RES', res);
-                        //console.log("An error occured, please try again.");         
+                        //console.log('RES', res);
+                        setNotification("Hubo un error. Inténtelo más tarde.");  
                     }
                 });
         }
