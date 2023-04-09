@@ -34,66 +34,85 @@ function sperant()
         </p>
         <p>
             
-        <input class="wpcf7-form-control has-spinner wpcf7-submit" type="submit" value="Enviar"><span class="wpcf7-spinner"></span><br>
+        <input class="wpcf7-form-control has-spinner wpcf7-submit" id="submit_btn" type="submit" value="Enviar">
+        
+        <!-- loading notification -->
+        <div id="loading-text"></div><br>
+        
         <input class="wpcf7-form-control wpcf7-hidden f2save" value="9" type="hidden" name="input_channel_id"><br>
         <input class="wpcf7-form-control wpcf7-hidden f2save" value="4" type="hidden" name="source_id"><br>
         <input class="wpcf7-form-control wpcf7-hidden f2save" value="3" type="hidden" name="interest_type_id"><br>
         <input class="wpcf7-form-control wpcf7-hidden f2save" value="540" type="hidden" name="project_id">
 
-        <!-- area de mensajes -->
+        <!-- area de mensajes     -->
         </p><div class="wpcf7-response-output" aria-hidden="true">Gracias por tu mensaje. Ha sido enviado.</div>
     </form>          
             
     <script>
 
         const base_url = '<?= Url::getBaseUrl() ?>'
-        //const url      = base_url + 'wp-json/bzz-export/v1/post';  /// apuntar al endpoint reg. en rutas
+        const url      = base_url + '/api/v1/form/save';  /// apuntar al endpoint reg. en rutas
+
+        function setNotification(msg){
+            document.getElementById("wpcf7-response-output").innerHTML = msg;
+        }
+
+        /*
+            Agregado para el "loading,.." con Ajax
+        */
+
+        document.getElementById("submit_btn").addEventListener("click", loadingAjaxNotification)
+    
+        function loadingAjaxNotification() {
+            document.getElementById("loading-text").innerHTML = "...";
+        }
+
+        function clearAjaxNotification() {
+            document.getElementById("loading-text").innerHTML = "";
+        }
 
         function do_it(e){
                 e.preventDefault();
 
-                const jsonData = getFormData(e.currentTarget, false)
+                let jsonData = getFormData(e.currentTarget, false)
 
-                console.log(jsonData)
-    
-                // jQuery.ajax({
-                //     url: url, // post
-                //     type: "post",
-                //     dataType: 'json',
-                //     cache: false,
-                //     processData: false, // important
-                //     contentType: false, // important
-                //     data: '',
-                //     success: function(res) {
-                //         clearAjaxNotification();
+                jsonData['extra_fields'] = { 'presupuesto': jsonData['extra_fields:presupuesto'] }
+                delete jsonData['extra_fields:presupuesto']
 
-                //         if (typeof res['message'] != 'undefined'){
-                //             let msg = res['message'];
+                //console.log(jsonData)
 
-                //             if (typeof res['errors'] != 'undefined'){
-                //                 if (typeof msg['path'] != 'undefined'){
-                //                     console.log(msg['path']);
-                //                     setNotification(msg['path']);
-                //                 }
-                //             }
-                //         }
+                jQuery.ajax({
+                    url: url, // post
+                    type: "post",
+                    dataType: 'json',
+                    cache: false,
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function(res) {
+                        clearAjaxNotification();
 
-                //         //console.log(res);                        
-                //     },
-                //     error: function(res) {
-                //         clearAjaxNotification();
+                        // if (typeof res['error'] != 'undefined'){
+                        //     if (typeof res['error']['message'] != 'undefined'){
+                        //         setNotification(res['error']['message']);
+                        //     }
+                        // }
 
-                //         if (typeof res['message'] != 'undefined'){
-                //             setNotification(res['message']);
-                //         }
+                        console.log('RES', res);                        
+                    },
+                    error: function(res) {
+                        clearAjaxNotification();
 
-                //         console.log(res);
-                //         console.log("An error occured, please try again.");         
-                //     }
-                // });
-            }
+                        // if (typeof res['message'] != 'undefined'){
+                        //     setNotification(res['message']);
+                        // }
 
-            jQuery('#hola_form').on("submit", function(event){ do_it(event); });
+                        console.log('RES', res);
+                        //console.log("An error occured, please try again.");         
+                    }
+                });
+        }
+
+        jQuery('#hola_form').on("submit", function(event){ do_it(event); });
     </script>
 
     <?php

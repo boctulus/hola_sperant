@@ -113,23 +113,23 @@ const fillForm = (data_obj, prefix = null) => {
     }
 }
 
-const setNotification = (msg) => {
-    if (Array.isArray(msg)){    
-        let block_elems = [];
+// const setNotification = (msg, target = '#modal_notifications') => {
+//     if (Array.isArray(msg)){    
+//         let block_elems = [];
 
-        msg.forEach((el) => {
-            block_elems.push(`<li>${el}</li>`)
-        })
+//         msg.forEach((el) => {
+//             block_elems.push(`<li>${el}</li>`)
+//         })
 
-        msg = '<ul style="list-style: none; margin: 0; padding: 0;">' + block_elems.join("\r\n") + '</ul>'
-    }
+//         msg = '<ul style="list-style: none; margin: 0; padding: 0;">' + block_elems.join("\r\n") + '</ul>'
+//     }
 
-    $('#modal_notifications').html(msg)
-}
+//     $('#modal_notifications').html(msg)
+// }
 
-const clearNotifications = () => {
-    $('#modal_notifications').html()
-}
+// const clearNotifications = (target = '#modal_notifications') => {
+//     $('#modal_notifications').html('')
+// }
 
 const setFormValidations = (validations) => {
     for (let field in validations) {
