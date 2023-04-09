@@ -12,7 +12,7 @@ class AjaxForm
     function save_form(){
         $req  = Request::getInstance();
         $data = $req->as_array()->getBody();
-        
+
         if (empty($data)){
             error("Falta el body o esta vacio o el formato es incorrecto", 400);
         }
@@ -40,6 +40,8 @@ class AjaxForm
         //////////////////////////////
     
         $cfg = config();
+
+        Files::dump($data); //
     
         try {
 

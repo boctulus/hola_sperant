@@ -81,7 +81,7 @@ function sperant()
 
                 let jsonData = getFormData(e.currentTarget, false)
 
-                jsonData['extra_fields'] = { 'presupuesto': jsonData['extra_fields:presupuesto'] }
+                jsonData['extra_fields'] = { 'rango_de_presupuesto': jsonData['extra_fields:presupuesto'] }
                 delete jsonData['extra_fields:presupuesto']
 
                 //console.log(jsonData)
@@ -104,7 +104,7 @@ function sperant()
                         //     }
                         // }
 
-                        //console.log('RES', res); 
+                        console.log('RES', res); 
                         setNotification("Gracias por tu mensaje. Ha sido enviado.");
                                                
                     },
@@ -115,7 +115,7 @@ function sperant()
                         //     setNotification(res['message']);
                         // }
 
-                        //console.log('RES', res);
+                        console.log('RES', res);
                         setNotification("Hubo un error. Inténtelo más tarde.");  
                     }
                 });
